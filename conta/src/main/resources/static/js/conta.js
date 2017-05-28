@@ -17,7 +17,7 @@ $('#confirmacaoExclusaoModal').on('show.bs.modal', function(event) {
 
 $(function() {
 	$('[rel="tooltip"]').tooltip();
-	$('.js-currency').maskMoney({decimal:',', thousands:'.', allowZero: false});
+	$('.js-currency').maskMoney({decimal:',', thousands:'.', allowZero: false, allowNegative: true});
 	
 	$('.js-atualizar-status').on('click', function(event){
 		event.preventDefault();

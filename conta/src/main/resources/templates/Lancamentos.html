@@ -41,19 +41,45 @@
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
-							<th class="text-center col-md-1">#</th>
 							<th>Decrição</th>
-							<th class="text-center col-md-2">Data de vencimento</th>
+							<th class="text-center col-md-2">Categoria</th>
 							<th class="text-right col-md-2">Valor</th>
 							<th class="text-center col-md-2">Status</th>
 							<th class="col-md-1"></th>
 						</tr>
 					</thead>
 					<tbody>
+						<tr th:each="lancamento : ${lancamentos}">
+							<th th:text="${lancamento.descricao}"></th>
+							<th class="text-center col-md-2"  >
+								<i class="fa fa-tag" th:style="${'color: '+lancamento.categoria.cor}" aria-hidden="true"></i>
+								<span th:text="${lancamento.categoria.descricao}" ></span>
+							</th>
+							<th class="text-right col-md-2" th:text="|R$ ${{lancamento.valor}}|"></th>
+							<th class="text-center col-md-2" >
+								<span class="label label-success" th:text="${lancamento.status.descricao}"
+									th:classappend="${lancamento.pendente ? 'label-danger' : 'label-success'}" ></span>
+							</th>
+							
+							<td class="text-center">
+		   						<a class="btn btn-link btn-xs"  
+		   								title="Editar" rel="tooltip" data-placement="top">
+		   							<span class="glyphicon glyphicon-pencil"></span>
+		   						</a>
+		   						<a class="btn btn-link btn-xs" 
+		   								title="Excluir" rel="tooltip" data-placement="top">
+		   							<span class="glyphicon glyphicon-remove"></span>
+		   						</a>
+		   						<a class="btn btn-link btn-xs js-atualizar-status" th:if="${lancamento.pendente}"
+		   								title="Receber" rel="tooltip" data-placement="top" >
+		   							<span class="glyphicon glyphicon-check"></span>
+		   						</a>
+		   					</td>
+						</tr>
 						
 						<tr>
-							<td colspan="6" >Nenhum
-								título foi encontrado</td>
+							<td colspan="6" th:if="${#lists.isEmpty(lancamentos)}" >Nenhum
+								lançamento foi encontrado</td>
 						</tr>
 					</tbody>
 				</table>

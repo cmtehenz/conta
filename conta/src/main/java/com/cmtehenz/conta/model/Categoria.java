@@ -1,22 +1,35 @@
 package com.cmtehenz.conta.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "categoria")
+public class Categoria {
 
 
-public class Categoria implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
+	private String cor;
+	
+	@ManyToOne
+	@JoinColumn(name = "categoria_pai_id")
 	private Categoria categoriaPai;
+	
+	@OneToMany(mappedBy = "categoriaPai", cascade = CascadeType.ALL)
 	private List<Categoria> subcategorias = new ArrayList<>();
-
 
 	public Long getId() {
 		return id;
@@ -26,7 +39,6 @@ public class Categoria implements Serializable {
 		this.id = id;
 	}
 
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -35,6 +47,13 @@ public class Categoria implements Serializable {
 		this.descricao = descricao;
 	}
 
+	public String getCor() {
+		return cor;
+	}
+
+	public void setCor(String cor) {
+		this.cor = cor;
+	}
 
 	public Categoria getCategoriaPai() {
 		return categoriaPai;

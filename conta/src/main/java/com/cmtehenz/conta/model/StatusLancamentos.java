@@ -1,14 +1,13 @@
 package com.cmtehenz.conta.model;
 
-public enum StatusPagamento {
+public enum StatusLancamentos {
 
-	
 	PENDENTE("Pendente"), 
 	PAGO("Pago");
 	
 	private String descricao;
 	
-	StatusPagamento(String descricao){
+	StatusLancamentos(String descricao){
 		this.descricao = descricao;
 	}
 

@@ -9,8 +9,12 @@
 </head>
 
 <section layout:fragment="conteudo">
-	<form class="form-horizontal" method="POST" th:action="@{/lancamentos}">
-
+	<form class="form-horizontal" method="POST" th:action="@{/lancamentos}" th:object="${lancamento}">
+		<div layout:include="MensagemGeral"></div>
+		<div layout:include="MensagemErro"></div>
+		
+		
+    	
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -25,14 +29,14 @@
 				<div class="form-group">
 					<label for="descricao" class="col-sm-2 control-label" >Descrição</label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="descricao" name="descricao"  />
+						<input type="text" class="form-control" id="descricao" th:field="*{descricao}"  />
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="valor" class="col-sm-2 control-label">Valor</label>
 					<div class="col-sm-2">
-						<input type="text" class="form-control js-currency" id="valor" name="valor" />
+						<input type="text" class="form-control js-currency" id="valor" th:field="*{valor}" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -41,17 +45,17 @@
 						<input type="text" class="form-control" id="dataVencimento"
 							data-provide="datepicker" data-date-format="dd/mm/yyyy"
 							data-date-language="pt-BR" data-date-autoclose="true"
-							data-date-today-highlight="true" name="dataVencimento" />
+							data-date-today-highlight="true" th:field="*{dataVencimento}" />
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="categoria" class="col-sm-2 control-label">Categoria</label>
 					<div class="col-sm-2">
-						<select class="form-control" id="categoria" >
-							<option></option>
-							<option value="Transporte">Transporte</option>
-							<option value="Alimentação">Alimentação</option>
+						<select class="form-control" id="categoria" th:field="*{categoria}" >
+							<option value=""></option>
+							<option th:each="categoria : ${todasCategoria}" th:value="${categoria.id}"
+							 	th:text="${categoria.descricao}"></option>
 						</select>
 
 					</div>
@@ -60,10 +64,8 @@
 				<div class="form-group">
 					<label for="status" class="col-sm-2 control-label">Status</label>
 					<div class="col-sm-2">
-						<select class="form-control" id="status" name="status">
-							<option></option>
-							<option value="PENDENTE">Pendente</option>
-							<option value="PAGO">Pago</option>
+						<select class="form-control" id="status" th:fields="*{status}">
+							<option th:each="status : ${todosStatusLancamento}" th:value="${status}" th:text="${status.descricao}" ></option>
 						</select>
 					</div>
 				</div>

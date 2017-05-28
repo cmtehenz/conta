@@ -6,14 +6,19 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 @Entity
@@ -22,13 +27,17 @@ public class Lancamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty(message = "Descrição é obrigatório")
+	@Size(max = 80, message = "Valor máximo de 80 caracteres" )
 	private String descricao;
 
 	@NotNull(message = "Valor não pode ser nulo")
-	@DecimalMin(value = "0.01", message = "Valor minimo de R$ 0,01")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valor;
 
+	@NotNull(message = "Data vencimento é obrigatório")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date dataVencimento;
 
@@ -36,7 +45,12 @@ public class Lancamento {
 	private Date dataPagamento;
 
 	@Enumerated(EnumType.STRING)
-	private StatusPagamento status;
+	private StatusLancamentos status;
+	
+	@NotNull(message = "Categoria é obrigatório")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categoria categoria;
 
 	public Long getId() {
 		return id;
@@ -78,12 +92,24 @@ public class Lancamento {
 		this.dataPagamento = dataPagamento;
 	}
 
-	public StatusPagamento getStatus() {
+	public StatusLancamentos getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusPagamento status) {
+	public void setStatus(StatusLancamentos status) {
 		this.status = status;
+	}
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public boolean isPendente(){
+		return StatusLancamentos.PENDENTE.equals(this.status);
 	}
 
 	@Override
